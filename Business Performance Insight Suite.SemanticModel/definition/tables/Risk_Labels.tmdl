@@ -1,0 +1,24 @@
+table Risk_Labels
+	lineageTag: 4c78b135-038c-4fc1-99ef-ff5c79b0fce4
+
+	column 'Metric Name'
+		dataType: string
+		lineageTag: 48ce1b23-eab1-4373-b19e-f05c7866b48d
+		summarizeBy: none
+		sourceColumn: Metric Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Risk_Labels = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WCkotKS3KUwhKLElVitWJVnJJzUmsRHCdU/NKihJzFCDKisFiHpnpGQoumcXJ+aV5JQo++cXFqUCJWAA=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Metric Name" = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Metric Name", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

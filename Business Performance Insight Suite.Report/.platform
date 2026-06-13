@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Business Performance Insight Suite"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "908f1e06-e990-44d2-913f-11fdc561fbbf"
+  }
+}

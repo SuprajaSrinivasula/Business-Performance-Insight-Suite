@@ -1,0 +1,18 @@
+relationship 7ffb2129-5672-447d-84f3-38a08177e5fc
+	joinOnDateBehavior: datePartOnly
+	fromColumn: All_orders.'Ship Date'
+	toColumn: LocalDateTable_b7c04899-8b9f-43cf-8289-6289acf211af.Date
+
+relationship AutoDetected_7f8e6b9d-e64b-41cd-bd31-d72aa5922ddc
+	fromColumn: All_orders.Region
+	toColumn: People.Region
+
+relationship 77f06f8e-2a52-4a12-b257-c46c1a74e665
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Date_Table.Date
+	toColumn: LocalDateTable_935185a2-d1ee-4930-85fd-4f95e6aa006b.Date
+
+relationship db87281b-6872-f127-50ce-96f2233c7786
+	fromColumn: All_orders.'Order Date'
+	toColumn: Date_Table.Date
+

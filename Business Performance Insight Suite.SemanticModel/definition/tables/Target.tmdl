@@ -1,0 +1,43 @@
+table Target
+	lineageTag: 874833ce-c0e7-4a66-be9d-61e4fc5e5edb
+
+	column Category
+		dataType: string
+		lineageTag: dccc3b57-fdb2-41a3-9659-79500d5a9b53
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: string
+		lineageTag: 620498cb-4af7-48f0-9adf-0a49cabc73d4
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales Target'
+		dataType: int64
+		formatString: 0
+		lineageTag: 873267bb-1ee5-4829-92a1-6849b7a2a035
+		summarizeBy: sum
+		sourceColumn: Sales Target
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Target = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\supra\Downloads\Target.csv"),[Delimiter=",", Columns=3, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Replaced Value" = Table.ReplaceValue(#"Promoted Headers","K","000",Replacer.ReplaceText,{"Sales Target"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Replaced Value",{{"Sales Target", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

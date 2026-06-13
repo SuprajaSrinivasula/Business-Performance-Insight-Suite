@@ -1,0 +1,127 @@
+table 'Measures (2)'
+	lineageTag: 0e6cf17f-db28-43cf-a69f-5c459e4a6b6f
+
+	measure 'Total Sales' =
+			
+			SUM(All_Orders[Sales])
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 6d452ce3-91d0-4d62-b306-9b139f0c1d4d
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Total Profit' =
+			
+			SUM(All_Orders[Profit])
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 701221dc-1b27-4265-ab6a-69e1652a8fde
+
+	measure 'Total Orders' =
+			
+			DISTINCTCOUNT(All_Orders[Order ID])
+		formatString: 0
+		lineageTag: 52aeb444-0841-4a59-9244-d6b31edccfde
+
+	measure 'Total Quantity' = SUMX('All_orders', VALUE('All_orders'[Quantity]))
+		formatString: 0
+		lineageTag: 4266a56f-f4f3-4191-b77a-efc03c6136b3
+
+	measure 'Profit Margin %' =
+			
+			DIVIDE([Total Profit],[Total Sales])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: f2fae186-0657-4908-969e-73b048317656
+
+	measure 'PY Sales' =
+			
+			CALCULATE(
+			    [Total Sales],
+			    SAMEPERIODLASTYEAR(Date_Table[Date])
+			)
+		formatString: 0
+		lineageTag: 22318db6-5645-42e5-bde5-233d52b9061a
+
+	measure 'Sales Growth %' =
+			
+			DIVIDE(
+			    [Total Sales] - [PY Sales],
+			    [PY Sales]
+			)
+		lineageTag: 0fd132ee-9675-4970-ad49-62b83e2a73d5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Target' = SUM('Target'[Sales Target])
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: a1ce1760-b0e7-4173-b443-86f2e9618bf4
+
+	measure Total_Returns = COUNT('Returns'[Order ID])
+		formatString: 0
+		lineageTag: c7051aab-fa75-46ba-89de-e76adf5a378c
+
+	measure 'Achievement %' = DIVIDE([Total Sales], [Total Target], 0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: de86f30a-e7b1-435b-9781-7d2b163ee706
+
+	measure Gap = [Total Sales] - [Total Target]
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: e68a2965-69de-49e0-bf6b-fa0c4104523e
+
+	measure 'Return Rate' = DIVIDE([Total_Returns], [Total Orders], 0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 6c89dba7-bd5f-428b-a16d-1fa9a4581987
+
+	measure 'Delayed Orders' = CALCULATE(COUNT('All_orders'[Order ID]), DATEDIFF('All_orders'[Order Date], 'All_orders'[Ship Date], DAY) > 4)
+		formatString: 0
+		lineageTag: 604c9efa-a4cf-4a53-84e0-03c661b0caa3
+
+	measure 'Delay Rate' = DIVIDE([Delayed Orders], [Total Orders], 0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: c53cf53d-729a-4532-9b1f-b163c445179d
+
+	measure 'Avg Shipping Days' = AVERAGEX('All_orders', DATEDIFF('All_orders'[Order Date], 'All_orders'[Ship Date], DAY))
+		lineageTag: 76b3bd6a-8018-4ff9-866d-244da7946059
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Risk Value' = ```
+			
+			SWITCH(
+			    SELECTEDVALUE('Risk_Labels'[Metric Name]),
+			    "Return Rate", [Return Rate],
+			    "Delay Rate", [Delay Rate],
+			    "Central Returns", CALCULATE([Total_Returns], 'All_orders'[Region] = "Central"),
+			    "High Discount Losses", [Total Sales] * 0.1 
+			)
+			```
+		lineageTag: bc382aae-5e1d-4731-ac8c-a9eb26c74d93
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Status = IF([Achievement %] >= 1, "✓ Hit", "X Missed")
+		lineageTag: 4a435c58-1e8b-43a9-af30-4cc3e2e549a0
+
+	measure 'Selected Year Title' = ```
+			
+			IF(
+			    ISBLANK(SELECTEDVALUE('Date_Table'[Year])),
+			    "All Years",
+			    "Selected Year: " & SELECTEDVALUE('Date_Table'[Year])
+			)
+			
+			```
+		lineageTag: 5031ba10-454b-4023-9076-a8653215fe37
+
+	partition 'Measures (2)' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMlKKjQUA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Measures = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Measures", Int64.Type}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Measures"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

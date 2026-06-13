@@ -1,0 +1,35 @@
+table Returns
+	lineageTag: a0736bd1-99d7-4c37-b9a2-760be4d406ca
+
+	column 'Order ID'
+		dataType: string
+		lineageTag: c12077bd-3c94-4421-9da1-30bad6e23ac5
+		summarizeBy: none
+		sourceColumn: Order ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Returned
+		dataType: string
+		lineageTag: 8f60e02a-5f19-420d-a9d4-be0debb1575f
+		summarizeBy: none
+		sourceColumn: Returned
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Returns = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\supra\Downloads\Returns.csv"),[Delimiter=",", Columns=2, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}, {"Column2", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"Order ID", type text}, {"Returned", type text}}),
+				    #"Removed Duplicates" = Table.Distinct(#"Changed Type1", {"Order ID"})
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

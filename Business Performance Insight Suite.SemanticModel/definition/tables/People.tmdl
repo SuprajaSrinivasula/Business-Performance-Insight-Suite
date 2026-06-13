@@ -1,0 +1,34 @@
+table People
+	lineageTag: baa7fbce-91e3-4632-948f-a9aaf59cc8a6
+
+	column Region
+		dataType: string
+		lineageTag: 60b8034e-b0ce-4871-84d8-febde45f3b01
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column People
+		dataType: string
+		lineageTag: e83f2e7e-ea45-4d86-80cd-ecdeca9a2e0b
+		summarizeBy: none
+		sourceColumn: People
+
+		annotation SummarizationSetBy = Automatic
+
+	partition People = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\supra\Downloads\People.csv"),[Delimiter=",", Columns=2, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}, {"Column2", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"Region", type text}, {"People", type text}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

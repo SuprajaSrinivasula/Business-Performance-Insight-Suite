@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Business Performance Insight Suite"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "4d290387-f6e1-49ec-ac00-6d9c7ae004e3"
+  }
+}

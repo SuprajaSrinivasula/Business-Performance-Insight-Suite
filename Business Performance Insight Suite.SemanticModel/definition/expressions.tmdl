@@ -1,0 +1,56 @@
+expression order_2015 =
+		let
+		    Source = Csv.Document(File.Contents("C:\Users\supra\Downloads\order_2015.csv"),[Delimiter=",", Columns=19, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Order ID", type text}, {"Order Date", Int64.Type}, {"Ship Date", Int64.Type}, {"Ship Mode", type text}, {"Customer ID", type text}, {"Customer Name", type text}, {"Segment", type text}, {"City", type text}, {"State", type text}, {"Country", type text}, {"Region", type text}, {"Product ID", type text}, {"Category", type text}, {"Sub-Category", type text}, {"Product Name", type text}, {"Sales", type number}, {"Quantity", Int64.Type}, {"Discount", type number}, {"Profit", type number}})
+		in
+		    #"Changed Type"
+	lineageTag: d0cc3b86-4c02-4c05-8041-15e2c0f6a4f8
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression order_2016 =
+		let
+		    Source = Csv.Document(File.Contents("C:\Users\supra\Downloads\order_2016.csv"),[Delimiter=",", Columns=19, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Replaced Value" = Table.ReplaceValue(#"Promoted Headers","one","1",Replacer.ReplaceText,{"Quantity"}),
+		    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","six","6",Replacer.ReplaceText,{"Quantity"}),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Replaced Value1",{{"Order Date", Int64.Type}, {"Ship Date", Int64.Type}}),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"Order Date", type datetime}, {"Ship Date", type datetime}}),
+		    #"Changed Type2" = Table.TransformColumnTypes(#"Changed Type1",{{"Order Date", type date}, {"Ship Date", type date}})
+		in
+		    #"Changed Type2"
+	lineageTag: f1a1a6ee-cf69-4559-b04f-bb0289e46c77
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression order_2017 =
+		let
+		    Source = Csv.Document(File.Contents("C:\Users\supra\Downloads\order_2017.csv"),[Delimiter=",", Columns=19, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Order ID", type text}, {"Order Date", Int64.Type}, {"Ship Date", Int64.Type}, {"Ship Mode", type text}, {"Customer ID", type text}, {"Customer Name", type text}, {"Segment", type text}, {"City", type text}, {"State", type text}, {"Country", type text}, {"Region", type text}, {"Product ID", type text}, {"Category", type text}, {"Sub-Category", type text}, {"Product Name", type text}, {"Sales", type number}, {"Quantity", Int64.Type}, {"Discount", type number}, {"Profit", type number}})
+		in
+		    #"Changed Type"
+	lineageTag: 16a46d53-b017-4c4d-b9f4-95ecd9f2713a
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression order_2018 =
+		let
+		    Source = Csv.Document(File.Contents("C:\Users\supra\Downloads\order_2018.csv"),[Delimiter=",", Columns=19, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Order ID", type text}, {"Order Date", Int64.Type}, {"Ship Date", Int64.Type}, {"Ship Mode", type text}, {"Customer ID", type text}, {"Customer Name", type text}, {"Segment", type text}, {"City", type text}, {"State", type text}, {"Country", type text}, {"Region", type text}, {"Product ID", type text}, {"Category", type text}, {"Sub-Category", type text}, {"Product Name", type text}, {"Sales", type number}, {"Quantity", type text}, {"Discount", type number}, {"Profit", type number}})
+		in
+		    #"Changed Type"
+	lineageTag: 2091a27e-59b9-47cb-bcd8-c57ee38b4cb5
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

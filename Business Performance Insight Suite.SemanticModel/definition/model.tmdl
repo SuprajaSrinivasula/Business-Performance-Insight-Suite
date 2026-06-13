@@ -1,0 +1,29 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-IN
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["order_2015","order_2016","order_2017","order_2018","All_orders","People","Target","Returns","Measures (2)","Risk_Labels"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.145.1262.0 (25.07)+10bdeda5ab0db954b2cf824e7a117ad7cee97f88
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table All_orders
+ref table DateTableTemplate_5708996e-85b1-4699-876f-b6a4ad3870bf
+ref table LocalDateTable_b7c04899-8b9f-43cf-8289-6289acf211af
+ref table People
+ref table Target
+ref table Returns
+ref table Date_Table
+ref table LocalDateTable_935185a2-d1ee-4930-85fd-4f95e6aa006b
+ref table 'Measures (2)'
+ref table Risk_Labels
+
+ref cultureInfo en-US
+

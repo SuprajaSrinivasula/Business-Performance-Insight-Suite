@@ -1,0 +1,202 @@
+table All_orders
+	lineageTag: 54dfb249-a65f-46d4-89cc-1ca675b1696f
+
+	column 'Order ID'
+		dataType: string
+		lineageTag: 74d81ec5-dadf-4280-b1d8-5773da209daf
+		summarizeBy: none
+		sourceColumn: Order ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 244a7a8b-24c2-4761-bd2d-cbb9f6106be5
+		summarizeBy: none
+		sourceColumn: Order Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Ship Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 5e53643c-5f94-4f5f-9a58-ad8a512218d9
+		summarizeBy: none
+		sourceColumn: Ship Date
+
+		variation Variation
+			isDefault
+			relationship: 7ffb2129-5672-447d-84f3-38a08177e5fc
+			defaultHierarchy: LocalDateTable_b7c04899-8b9f-43cf-8289-6289acf211af.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Ship Mode'
+		dataType: string
+		lineageTag: ed4a3471-cb10-4ee3-ba47-926958304704
+		summarizeBy: none
+		sourceColumn: Ship Mode
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer ID'
+		dataType: string
+		lineageTag: fd8f78c8-0013-4615-80a5-7087e6333c9d
+		summarizeBy: none
+		sourceColumn: Customer ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Name'
+		dataType: string
+		lineageTag: eb6bb717-7dc8-4b14-9301-86db6cc03bb5
+		summarizeBy: none
+		sourceColumn: Customer Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Segment
+		dataType: string
+		lineageTag: ffbe786b-a946-4d83-999c-33fc09302253
+		summarizeBy: none
+		sourceColumn: Segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: fd9ac898-5f8a-4d80-b1d0-275203a146a0
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: ba446a59-2f4e-4daa-af09-a8b5b756557b
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: 2fc773e3-0866-45a1-87fc-014f6fb7b5d6
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: 08c6e8fd-0c62-4b85-b27f-085699bdd38e
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product ID'
+		dataType: string
+		lineageTag: e120fd22-c524-44d8-94a4-659dc652e7d4
+		summarizeBy: none
+		sourceColumn: Product ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: c431cf4f-bdc1-443d-a3df-524e74920d25
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sub-Category
+		dataType: string
+		lineageTag: 5ba9adc8-5ec1-4d05-82a6-28a251c73b16
+		summarizeBy: none
+		sourceColumn: Sub-Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Name'
+		dataType: string
+		lineageTag: 7d9fbd6d-cc8b-44ee-b938-527eb719d5a7
+		summarizeBy: none
+		sourceColumn: Product Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sales
+		dataType: int64
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 605ab79f-08a6-485f-9cb6-d5747126651d
+		summarizeBy: sum
+		sourceColumn: Sales
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: bd7d622e-cf85-40e5-bde9-e30776106815
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Discount
+		dataType: string
+		lineageTag: 7b6bc35d-f66b-4a38-a889-3527e172e7b3
+		summarizeBy: none
+		sourceColumn: Discount
+
+		annotation SummarizationSetBy = Automatic
+
+	column Profit
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: e4247cdc-e52f-48dd-b971-9b47894bb756
+		summarizeBy: sum
+		sourceColumn: Profit
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column Manager
+		dataType: string
+		lineageTag: 1c4e58bd-0502-4d0c-93b7-322d68d79fe9
+		summarizeBy: none
+		sourceColumn: Manager
+
+		annotation SummarizationSetBy = Automatic
+
+	partition All_orders = m
+		mode: import
+		source =
+				let
+				    Source = Table.Combine({order_2015, order_2016, order_2017, order_2018}),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Order Date", type datetime}, {"Ship Date", type datetime}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"Order Date", type date}, {"Ship Date", type date}}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Changed Type1", "Manager", each if [Region] = "Central" then "Emily Burns" else if [Region] = "North" then "Ross DeVincentis" else if [Region] = "South" then "Damala Kotsonis" else null),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Added Conditional Column",{{"Quantity", Int64.Type}}),
+				    #"Removed Errors" = Table.RemoveRowsWithErrors(#"Changed Type2", {"Order ID"})
+				in
+				    #"Removed Errors"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
