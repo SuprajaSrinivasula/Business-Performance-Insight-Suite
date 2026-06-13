@@ -33,6 +33,7 @@ This dashboard is divided into 4 specialized views, allowing users to drill down
 
 ### 1. Business & Overview Page
 <img width="1009" height="802" alt="Business   OverView" src="https://github.com/user-attachments/assets/2aed1cd5-1dc3-4773-be8e-9919d464928e" />
+
 *   **Purpose:** Acts as the primary executive view, tracking high-level metrics across sales, profits, profit margins, and volume trends.
 *   **Key Highlights:** 
     *   Tracks macro KPIs (e.g., Total Sales of \$653K, Profit Margin of 12.87% for the active filter year).
